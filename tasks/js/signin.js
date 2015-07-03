@@ -7,3 +7,23 @@
 */
 
 //use jQuery to register a function that is called when the document is ready for manipulation
+$(function() {
+	$('.form-signin').submit(function(evt) {
+		evt.preventDefault();
+		var newSignInForm = $(this);
+
+		var email = $('#inputEmail').val();
+		var password = $('#inputPassword').val();
+
+		var addButton = newSignInForm.find(':submit');
+		addButton.prop('disabled', true).addClass('working');
+
+		Parse.User.logIn(email, password).then(function() {
+			window.location = 'index.html';
+			addButton.prop('disabled', false).removeClass('working');
+		}, function(err) {
+			showError(err);
+			addButton.prop('disabled', false).removeClass('working');
+		});
+	});
+});
